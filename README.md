@@ -9,6 +9,7 @@ Add `.clone()` method if you don't create it
 ### Example
 
 ```js
+// Create class Entity
 var Entity = fus(function(life)
 {
 	// Class constructor
@@ -29,9 +30,11 @@ var Entity = fus(function(life)
 	}
 });
 
+
 var e = new Entity(10); // Create an instance
 e.damage(845); // Call a method
-console.log(e.alive); // false
+console.log(e.alive); // print false
+
 
 var Player = fus(function(name)
 {
@@ -50,25 +53,34 @@ var Player = fus(function(name)
 	}
 }, Entity); // extends Entity
 
+
 var p = new Player("tom");
-p.sayLife(); // "tom has 10 life points"
-p.die(); // "tom is dead"
-console.log(p.alive); // false
+p.sayLife(); // print "tom has 10 life points"
+p.die(); // print "tom is dead"
+console.log(p.alive); // print false
 ```
 
 ### Reference
 
 *	`fus(constructor, prototypes, superClass)`
-	> Create a class
-	> superClass is optionnal
+	> Create a class  
+	> superClass is optionnal  
 	> Add `.clone()` method to the class (except if you add it or if parent have it)
 
 *	fus`.extendClass(childClass, superClass)`
-	> Extend a class
-	> Function used by `fus`
+	> Extend a class  
+	> Function used by `fus`  
 	> Not helpful, use `fus` instead
 
 *	fus`.clone(obj)`
-	> Clone `obj`
-	> Doesn't copy recursively
+	> Clone `obj`  
+	> Doesn't copy recursively  
 	> For Class created with `fus` use `obj.clone()` instead
+
+*	ClassName`.super(instance)()`
+	> Call the super constructor (if you extend a class)
+
+*	ClassName`.super(instance, method)()`
+	> Call a super class method  
+	> `instance` is `this`  
+	> `method` is the method name (string)
