@@ -2,16 +2,14 @@
  * Fus 2
  */
 
-var fus = (function(){
+var fus = (function(pr, own){
 
 function clone()
 {
 	var newObj = new this.constructor(), key;
 	for (key in this)
-	{
-		if (this.hasOwnProperty(key))
+		if (this[own](key))
 			newObj[key] = this[key];
-	}
 	return newObj;
 }
 
@@ -21,25 +19,21 @@ function extend(klass, parent)
 	{
 		return function()
 		{
-			(method && parent.prototype[method] || parent).apply(self, arguments);
+			(method && parent[pr][method] || parent).apply(self, arguments);
 		};
 	};
-	for(var method in parent.prototype)
-	{
-		if (parent.prototype.hasOwnProperty(method) && !klass.prototype.hasOwnProperty(method))
-			klass.prototype[method] = parent.prototype[method];
-	}
-	klass.prototype.constructor = klass;
+	for(var method in parent[pr])
+		if (parent[pr][own](method) && !klass[pr][own](method))
+			klass[pr][method] = parent[pr][method];
+	klass[pr].constructor = klass;
 }
 
 function fus2(construct, proto, parent)
 {
-	construct.prototype.clone = clone;
+	construct[pr].clone = clone;
 	for (var method in proto)
-	{
-		if (proto.hasOwnProperty(method))
-			construct.prototype[method] = proto[method];
-	}
+		if (proto[own](method))
+			construct[pr][method] = proto[method];
 	if (parent)
 		extend(construct, parent);
 	return construct;
@@ -52,4 +46,4 @@ fus2.extendClass = extend;
 
 return fus2;
 
-})();
+})("prototype", "hasOwnProperty");
